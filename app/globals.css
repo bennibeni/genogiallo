@@ -1,0 +1,893 @@
+:root {
+  --bg: #10131c;
+  --panel: #171c29;
+  --panel-border: #262d3f;
+  --text: #e7e9f2;
+  --text-dim: #8b91a7;
+  --accent: #5b8def;
+  --danger: #e85d5d;
+  --ok: #4dd9c0;
+  --warn: #d9a441;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-geist-sans), "Space Grotesk", "Inter", system-ui, sans-serif;
+}
+
+button,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+/* --- Intestazione --- */
+.topbar {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 24px 28px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.topbar .brand {
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  color: var(--text-dim);
+}
+.topbar .brand.active {
+  color: var(--text);
+}
+
+/* --- Contenitore principale del gioco --- */
+.detective-game {
+  font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  padding: 28px;
+  border-radius: 14px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+.detective-game h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+.detective-game h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 10px;
+}
+.detective-game .subtitle {
+  color: var(--text-dim);
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0 0 20px;
+}
+.detective-game .case-meta {
+  color: var(--text-dim);
+  font-size: 12px;
+  margin: 0 0 14px;
+}
+.detective-game .case-meta-info-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid var(--text-dim);
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 10px;
+  line-height: 1;
+  cursor: pointer;
+  margin-left: 4px;
+  padding: 0;
+  vertical-align: middle;
+}
+.detective-game .case-meta-info-button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.detective-game .lineage-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 8, 13, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 60;
+  padding: 20px;
+}
+.detective-game .lineage-modal {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  padding: 28px;
+  max-width: 720px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+}
+.detective-game .lineage-modal h3 {
+  margin: 0 0 8px;
+}
+.detective-game .lineage-modal h4 {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin: 20px 0 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.detective-game .lineage-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 16px;
+  cursor: pointer;
+  line-height: 1;
+}
+.detective-game .settings-modal {
+  max-width: 420px;
+}
+.detective-game .settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+.detective-game .settings-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13.5px;
+  cursor: pointer;
+}
+.detective-game .settings-row input {
+  accent-color: var(--accent);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.detective-game .view-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.detective-game .view-tabs a {
+  font-weight: 600;
+  font-size: 13px;
+  padding: 9px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--panel-border);
+  cursor: pointer;
+  background: var(--panel);
+  color: var(--text-dim);
+  text-decoration: none;
+  display: inline-block;
+}
+.detective-game .view-tabs a.active {
+  background: var(--accent);
+  color: #0b0e15;
+  border-color: var(--accent);
+}
+.detective-game .view-tabs a.pulse {
+  animation: view-tab-pulse 1.4s ease-in-out infinite;
+}
+@keyframes view-tab-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(91, 141, 239, 0.55);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(91, 141, 239, 0);
+  }
+}
+
+.detective-game .panel.generation-announcement {
+  border-color: var(--accent);
+  background: rgba(91, 141, 239, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+.detective-game .generation-announcement p {
+  margin: 0;
+  font-size: 13px;
+}
+
+.detective-game .panel {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 16px;
+}
+
+/* --- Setup (form "nuova partita personalizzata", non collegato di default) --- */
+.detective-game .mode-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.detective-game .mode-tabs button {
+  flex: 1;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--panel-border);
+  cursor: pointer;
+  background: var(--panel);
+  color: var(--text-dim);
+}
+.detective-game .mode-tabs button.active {
+  background: var(--accent);
+  color: #0b0e15;
+  border-color: var(--accent);
+}
+.detective-game .field {
+  display: block;
+  font-size: 12.5px;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+}
+.detective-game .field b {
+  color: var(--text);
+  font-weight: 600;
+}
+.detective-game .field input[type="range"] {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  accent-color: var(--accent);
+}
+.detective-game .field input[type="file"] {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  color: var(--text);
+  font-size: 12.5px;
+}
+.detective-game .primary-button {
+  font-weight: 600;
+  font-size: 13.5px;
+  padding: 11px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: var(--accent);
+  color: #0b0e15;
+}
+.detective-game .primary-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.detective-game .secondary-button {
+  font-weight: 600;
+  font-size: 13px;
+  padding: 9px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--panel-border);
+  cursor: pointer;
+  background: transparent;
+  color: var(--text);
+}
+.detective-game .status-error {
+  color: var(--danger);
+  font-size: 12.5px;
+  margin-top: 8px;
+}
+.detective-game .status-warning {
+  color: var(--warn);
+  font-size: 12.5px;
+  margin-top: 8px;
+}
+
+/* --- Indagine --- */
+.detective-game .case-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.detective-game .suspect-count {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+.detective-game .suspect-count b {
+  color: var(--accent);
+  font-size: 16px;
+}
+.detective-game .case-header-note {
+  color: var(--ok);
+  font-size: 12px;
+  margin: 0 0 14px;
+}
+.detective-game .clues-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.detective-game .clue-card {
+  background: #0d0f17;
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+.detective-game .clue-card .clue-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+.detective-game .clue-card .clue-hint {
+  font-size: 11.5px;
+  color: var(--text-dim);
+  margin-top: 2px;
+  font-style: italic;
+}
+.detective-game .clue-card .clue-value {
+  font-size: 14px;
+  font-weight: 600;
+}
+.detective-game .clue-card.locked {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  border-style: dashed;
+}
+.detective-game .clue-card.locked .clue-locked-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-right: 10px;
+}
+.detective-game .clue-card.locked button {
+  font-weight: 600;
+  font-size: 12px;
+  padding: 7px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+}
+.detective-game .ancestry-group-values {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.detective-game .ancestry-group-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+}
+.detective-game .ancestry-group-row-label {
+  color: var(--text-dim);
+}
+.detective-game .ancestry-group-row-value {
+  font-weight: 600;
+  text-align: right;
+}
+
+.detective-game .suspect-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+  gap: 10px;
+  margin-top: 4px;
+}
+.detective-game .suspect-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+  border-radius: 8px;
+}
+.detective-game .suspect-tile:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+.detective-game .suspect-tile .avatar-ring {
+  border-radius: 50%;
+  padding: 2px;
+  border: 2px solid transparent;
+}
+.detective-game .suspect-tile.selected .avatar-ring {
+  border-color: var(--accent);
+}
+.detective-game .suspect-tile.indiziato .avatar-ring {
+  border-color: var(--ok);
+}
+.detective-game .suspect-tile.assassino .avatar-ring {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 1px var(--danger);
+}
+.detective-game .suspect-tile .suspect-id {
+  font-size: 10px;
+  color: var(--text-dim);
+  font-family: "IBM Plex Mono", monospace;
+}
+.detective-game .board-note {
+  color: var(--warn);
+  font-size: 12.5px;
+  margin: 10px 0 0;
+}
+.detective-game .board-empty {
+  color: var(--text-dim);
+  font-size: 13px;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.detective-game .generation-legend {
+  color: var(--text-dim);
+  font-size: 12.5px;
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+.detective-game .generation-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+  align-items: start;
+}
+.detective-game .generation-group {
+  background: #0d0f17;
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  position: relative;
+}
+.detective-game .generation-group-dismiss {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--panel-border);
+  background: #171c29;
+  color: var(--text-dim);
+  font-size: 10px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.detective-game .generation-group-dismiss:hover {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
+}
+.detective-game .generation-group-header {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+}
+.detective-game .generation-group-children {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.detective-game .generation-back {
+  margin-top: 18px;
+}
+
+.detective-game .accusation-bar {
+  position: sticky;
+  bottom: 0;
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--panel);
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  padding: 14px 18px;
+}
+.detective-game .accusation-bar .accusation-text {
+  font-size: 13.5px;
+}
+.detective-game .accusation-bar .accusation-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.detective-game .panel.wrong-guess-banner {
+  border-color: var(--warn);
+  background: rgba(217, 164, 65, 0.08);
+}
+.detective-game .wrong-guess-banner p {
+  margin: 0;
+  font-size: 13.5px;
+}
+
+/* --- Esito --- */
+.detective-game .result-banner {
+  text-align: center;
+  padding: 24px 18px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+.detective-game .result-banner.win {
+  background: rgba(77, 217, 192, 0.12);
+  border: 1px solid var(--ok);
+}
+.detective-game .result-banner.lose {
+  background: rgba(232, 93, 93, 0.12);
+  border: 1px solid var(--danger);
+}
+.detective-game .result-banner .result-title {
+  font-size: 19px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.detective-game .result-banner.win .result-title {
+  color: var(--ok);
+}
+.detective-game .result-banner.lose .result-title {
+  color: var(--danger);
+}
+.detective-game .result-banner .result-subtitle {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+.detective-game .result-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+/* --- Rivelazione scherzosa per un sospetto deceduto (DeceasedReveal.jsx) --- */
+.deceased-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 8, 13, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 60;
+  padding: 20px;
+}
+.deceased-card {
+  background: #171c29;
+  border: 1px solid #262d3f;
+  border-radius: 14px;
+  padding: 32px 28px 24px;
+  max-width: 340px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+  color: #e7e9f2;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: deceased-pop 0.25s ease-out;
+}
+.deceased-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: none;
+  border: none;
+  color: #8b91a7;
+  font-size: 16px;
+  cursor: pointer;
+  line-height: 1;
+}
+.deceased-tombstone {
+  font-size: 64px;
+  line-height: 1;
+  margin-bottom: 14px;
+  animation: deceased-rise 0.5s ease-out;
+}
+.deceased-epitaph {
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: #e7e9f2;
+  margin: 0 0 22px;
+}
+.deceased-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+.deceased-secondary,
+.deceased-primary {
+  font-weight: 600;
+  font-size: 13px;
+  padding: 9px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.deceased-secondary {
+  background: transparent;
+  border: 1px solid #262d3f;
+  color: #e7e9f2;
+}
+.deceased-primary {
+  background: #5b8def;
+  border: 1px solid #5b8def;
+  color: #0b0e15;
+}
+@keyframes deceased-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes deceased-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Scheda anagrafica (AncestryDetailModal.jsx) --- */
+.ancestry-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 10, 16, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+.ancestry-modal {
+  background: #171c29;
+  border: 1px solid #262d3f;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 560px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+  color: #e7e9f2;
+}
+.ancestry-modal-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.ancestry-back {
+  background: transparent;
+  border: 1px solid #262d3f;
+  color: #8b91a7;
+  font-size: 12.5px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.ancestry-close {
+  background: transparent;
+  border: none;
+  color: #8b91a7;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+.ancestry-modal h3 {
+  margin: 8px 0 2px;
+  font-size: 19px;
+  font-weight: 600;
+}
+.ancestry-subtitle {
+  color: #8b91a7;
+  font-size: 13px;
+  margin: 0 0 16px;
+}
+.ancestry-note {
+  color: #8b91a7;
+  font-size: 12.5px;
+  line-height: 1.5;
+  margin: 8px 0 14px;
+}
+.ancestry-matriline-note {
+  color: #4dd9c0;
+}
+.ancestry-patriline-note {
+  color: #ff8a5c;
+}
+.ancestry-lhon-note {
+  color: #9fb8d9;
+}
+.ancestry-swyer-note {
+  color: #c9a7f0;
+}
+.ancestry-avatar {
+  display: block;
+  margin-bottom: 14px;
+}
+.ancestry-extra-action {
+  display: block;
+  width: 100%;
+  margin: 0 0 16px;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #5b8def;
+  cursor: pointer;
+  background: rgba(91, 141, 239, 0.15);
+  color: #5b8def;
+}
+.ancestry-section-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  margin: 20px 0 8px;
+  border-top: 1px solid #262d3f;
+  padding-top: 16px;
+}
+.ancestry-bar-row {
+  margin-bottom: 6px;
+}
+.ancestry-bar {
+  display: flex;
+  width: 100%;
+  height: 16px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #0d0f17;
+  margin-bottom: 8px;
+}
+.ancestry-bar-segment {
+  height: 100%;
+}
+.ancestry-bar-legend {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: #e7e9f2;
+  font-family: "IBM Plex Mono", monospace;
+}
+.ancestry-legend-item {
+  display: flex;
+  align-items: center;
+}
+.ancestry-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  margin-right: 5px;
+}
+.ancestry-count {
+  color: #8b91a7;
+  margin-left: 3px;
+}
+.ancestry-compare-label {
+  font-size: 11.5px;
+  color: #8b91a7;
+  margin: 8px 0 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.ancestry-compare {
+  background: #0d0f17;
+  border: 1px solid #262d3f;
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 4px;
+}
+.ancestry-compare-label:first-child {
+  margin-top: 0;
+}
+.ancestry-parents {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.ancestry-card {
+  background: #0d0f17;
+  border: 1px solid #262d3f;
+  border-radius: 8px;
+  padding: 12px;
+}
+.ancestry-card.clickable {
+  cursor: pointer;
+}
+.ancestry-card.clickable:hover {
+  border-color: #5b8def;
+}
+.ancestry-card-header {
+  margin-bottom: 8px;
+}
+.ancestry-card-header-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ancestry-card-header-bottom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+.ancestry-card-id {
+  font-weight: 700;
+  font-family: "IBM Plex Mono", monospace;
+}
+.ancestry-card-gen {
+  font-size: 11.5px;
+  color: #8b91a7;
+}
+.ancestry-founder-badge {
+  font-size: 10.5px;
+  background: #262d3f;
+  color: #e7e9f2;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.ancestry-role-badge {
+  font-size: 10.5px;
+  color: #0b0e15;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.ancestry-sex-badge {
+  font-size: 10.5px;
+  border: 1px solid #262d3f;
+  color: #8b91a7;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-family: "IBM Plex Mono", monospace;
+}
+.ancestry-card-hint {
+  font-size: 11.5px;
+  color: #5b8def;
+  margin-top: 6px;
+}
+@media (max-width: 480px) {
+  .ancestry-parents {
+    grid-template-columns: 1fr;
+  }
+}
