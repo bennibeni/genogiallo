@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect } from "react";
-import { useAppState } from "@/lib/store";
-import AncestryDetailModal from "./AncestryDetailModal";
-import CaseResult from "./CaseResult";
-import DeceasedReveal from "./DeceasedReveal";
-import LineageOverviewModal from "./LineageOverviewModal";
-import SettingsModal from "./SettingsModal";
-import { SCHEMA_INDEX } from "@/lib/caseEngine";
+import { SCHEMA_INDEX } from '@/lib/caseEngine';
+import { useAppState } from '@/lib/store';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
+import AncestryDetailModal from './AncestryDetailModal';
+import CaseResult from './CaseResult';
+import DeceasedReveal from './DeceasedReveal';
+import LineageOverviewModal from './LineageOverviewModal';
+import SettingsModal from './SettingsModal';
 
 // Il guscio che avvolge ogni rotta (vedi app/layout.js) — stesso ruolo di
 // AppShell.tsx in dodici: intestazione con la navigazione persistente, più
@@ -53,7 +53,7 @@ export default function AppShell({ children }) {
   // naviga davvero — prima lo faceva il click sul tab interno
   // ("setVista('generazione')"), ora è la navigazione stessa il segnale.
   useEffect(() => {
-    if (pathname === "/generazione" && !avvisoGenerazioneVisto) {
+    if (pathname === '/generazione' && !avvisoGenerazioneVisto) {
       setAvvisoGenerazioneVisto(true);
     }
   }, [pathname, avvisoGenerazioneVisto, setAvvisoGenerazioneVisto]);
@@ -61,30 +61,30 @@ export default function AppShell({ children }) {
   // Scorciatoia segreta per il pannello impostazioni — Ctrl+Alt+S.
   useEffect(() => {
     function handleKeyDown(e) {
-      if (e.ctrlKey && e.altKey && e.key.toLowerCase() === "s") {
+      if (e.ctrlKey && e.altKey && e.key.toLowerCase() === 's') {
         e.preventDefault();
         setShowSettings(true);
       }
     }
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [setShowSettings]);
 
   const isActive = (href) => pathname === href;
 
-  if (phase === "setup") {
+  if (phase === 'setup') {
     return (
       <main className="detective-game">
-        <h2>Un rompicapo investigativo</h2>
+        <h2>Un&apos;indagine genetica</h2>
         <p className="subtitle">Generazione della simulazione in corso…</p>
       </main>
     );
   }
 
-  if (phase === "result") {
+  if (phase === 'result') {
     return (
       <main className="detective-game">
-        <h2>Un rompicapo investigativo</h2>
+        <h2>Un&apos;indagine genetica</h2>
         <CaseResult data={data} kase={kase} accusedId={accusedId} onNewCase={handleNewCase} />
       </main>
     );
@@ -92,17 +92,20 @@ export default function AppShell({ children }) {
 
   return (
     <main className="detective-game">
-      <h2>Un rompicapo investigativo</h2>
+      <h2>Un&apos;indagine genetica</h2>
 
       {/* Il link "Generazione" esiste solo dopo aver richiesto l'indizio
           "generazione" — prima non ha senso, non sapremmo quale generazione
           mostrare. */}
       <nav className="view-tabs">
-        <Link className={isActive("/") ? "active" : ""} href="/">
+        <Link className={isActive('/') ? 'active' : ''} href="/">
           Indagine
         </Link>
         {generazioneNota && (
-          <Link className={`${isActive("/generazione") ? "active" : ""}${!avvisoGenerazioneVisto ? " pulse" : ""}`} href="/generazione">
+          <Link
+            className={`${isActive('/generazione') ? 'active' : ''}${!avvisoGenerazioneVisto ? ' pulse' : ''}`}
+            href="/generazione"
+          >
             Vedi la generazione
           </Link>
         )}
@@ -112,7 +115,7 @@ export default function AppShell({ children }) {
         Simulazione generata: {data.individui.length} individui in totale
         {data.generazioniEvolute !== undefined
           ? `, distribuiti su ${data.generazioniEvolute + 1} generazioni (dai fondatori alla generazione ${data.generazioniEvolute})`
-          : ""}
+          : ''}
         .
         {data.lineeMaterneSuperstiti !== undefined && data.lineePaterneSuperstiti !== undefined && (
           <>
@@ -131,16 +134,24 @@ export default function AppShell({ children }) {
       </p>
 
       {showLineageOverview && (
-        <LineageOverviewModal data={data} onOpenDetail={state.handleOpenDetail} onClose={() => setShowLineageOverview(false)} />
+        <LineageOverviewModal
+          data={data}
+          onOpenDetail={state.handleOpenDetail}
+          onClose={() => setShowLineageOverview(false)}
+        />
       )}
 
       {!settings.dontShowGenerationUnlockBanner && generazioneNota && !avvisoGenerazioneVisto && (
         <div className="panel generation-announcement">
           <p>
-            Nuovo: conosci la generazione dell'assassino. Puoi vedere tutta quella generazione, raggruppata per
-            famiglie, nella scheda <b>&quot;Vedi la generazione&quot;</b> qui sopra.
+            Nuovo: conosci la generazione dell&apos;assassino. Puoi vedere tutta quella generazione,
+            raggruppata per famiglie, nella scheda <b>&quot;Vedi la generazione&quot;</b> qui sopra.
           </p>
-          <button type="button" className="secondary-button" onClick={() => setAvvisoGenerazioneVisto(true)}>
+          <button
+            type="button"
+            className="secondary-button"
+            onClick={() => setAvvisoGenerazioneVisto(true)}
+          >
             Ho capito
           </button>
         </div>
@@ -178,16 +189,26 @@ export default function AppShell({ children }) {
             setDetailId(null);
             setShowFullDetail(false);
           }}
-          extraAction={accusationLocked ? undefined : { label: "Accusa questo sospettato", onClick: handleStartAccusation }}
+          extraAction={
+            accusationLocked
+              ? undefined
+              : { label: 'Accusa questo sospettato', onClick: handleStartAccusation }
+          }
           nomi={data.nomi}
         />
       )}
 
       {pendingAccusationId !== null && (
         <div className="accusation-bar">
-          <span className="accusation-text">Accusi {nomeSospetto(pendingAccusationId)}? Se sbagli il caso si chiude.</span>
+          <span className="accusation-text">
+            Accusi {nomeSospetto(pendingAccusationId)}? Se sbagli il caso si chiude.
+          </span>
           <span className="accusation-actions">
-            <button type="button" className="secondary-button" onClick={() => setPendingAccusationId(null)}>
+            <button
+              type="button"
+              className="secondary-button"
+              onClick={() => setPendingAccusationId(null)}
+            >
               Annulla
             </button>
             <button type="button" className="primary-button" onClick={handleConfirmAccusation}>
@@ -197,7 +218,13 @@ export default function AppShell({ children }) {
         </div>
       )}
 
-      {showSettings && <SettingsModal settings={settings} onChange={updateSetting} onClose={() => setShowSettings(false)} />}
+      {showSettings && (
+        <SettingsModal
+          settings={settings}
+          onChange={updateSetting}
+          onClose={() => setShowSettings(false)}
+        />
+      )}
     </main>
   );
 }

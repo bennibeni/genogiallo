@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import CluesPanel from "@/components/CluesPanel";
-import SuspectBoard from "@/components/SuspectBoard";
-import { useAppState } from "@/lib/store";
+import CluesPanel from '@/components/CluesPanel';
+import SuspectBoard from '@/components/SuspectBoard';
+import { useAppState } from '@/lib/store';
 
 export default function IndaginePage() {
   const {
@@ -20,7 +20,7 @@ export default function IndaginePage() {
   } = useAppState();
 
   return (
-    <>
+    <main>
       <CluesPanel
         kase={kase}
         activeClues={activeClues}
@@ -39,8 +39,8 @@ export default function IndaginePage() {
       <div className="panel">
         <h3>Sospettati</h3>
         <p className="board-note">
-          Solo un campione casuale (ma c&apos;è almeno un indiziato vero): il colpevole non è detto che sia lui a
-          meno che non sia l&apos;unico indiziato rimasto.
+          Solo un campione casuale (ma c&apos;è almeno un indiziato vero): il colpevole non è detto
+          che sia lui a meno che non sia l&apos;unico indiziato rimasto.
         </p>
         <SuspectBoard
           data={data}
@@ -53,6 +53,9 @@ export default function IndaginePage() {
           assassinoId={kase.assassinoId}
         />
       </div>
-    </>
+      <footer className="projects-footer">
+        <a href="https://links-page-bennibeni.vercel.app/">&larr; All projects</a>
+      </footer>
+    </main>
   );
 }
